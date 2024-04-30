@@ -4,17 +4,17 @@ fun main() {
     println("환영합니다! 아무개 단주의 야구게임입니다.")
 
     while (true) {
-        val answer = randomRandom()
+        val amuRandom = randomRandom()
         var gameIsOver = false
 
-        println( "1. 게임 시작! 2. 게임 기록 3. 게임 종료 ")
+        println( "1. 게임 시작 2. 게임 기록 3. 게임 종료 ")
         when (readLine()) {
             "1" -> {
                 println("게임을 시작합니다. 세 자리 숫자를 입력하세요: ")
                 while (!gameIsOver) {
                     val guess = readLine() ?: ""
                     if (isValidInput(guess)) {
-                        val result = checkGuess(guess, answer)
+                        val result = checkGuess(guess, amuRandom)
                         println(result)
                         if (result == "딩동댕~ 정답!") {
                             gameIsOver = true
@@ -24,14 +24,31 @@ fun main() {
                     }
                 }
             }
+//            "2" -> {
+//                println("게임 기록을 표시합니다.")
+//                if (gameRecords.isEmpty()) {
+//                    println("기록이 없습니다.")
+//                } else {
+//                    gameRecords.forEachIndexed { index, record ->
+//                        println("${index + 1}. $record")
+//                    }
+//                }
+//            }
+            "3" -> {
+                println("게임을 종료합니다.")
+                return
+            }
+            else -> println("잘못된 입력입니다.")
         }
 
         println("게임이 종료되었습니다. 게임을 다시 시작하려면 아무 키나 누르세요.")
-        readLine() // 사용자가 아무 키나 누를 때까지 대기
+
     }
 }
 
- fun randomRandom(): String {
+
+
+fun randomRandom(): String {
     val digits = mutableListOf<Int>()
     while (digits.size < 3) {
         val digit = Random.nextInt(1, 10)
@@ -63,6 +80,6 @@ fun main() {
         strikes > 0 && balls > 0 -> "$strikes 스트라이크, $balls 볼"
         strikes > 0 -> "$strikes 스트라이크"
         balls > 0 -> "$balls 볼"
-        else -> "Nothing"
+        else -> "없는디유"
     }
 }
