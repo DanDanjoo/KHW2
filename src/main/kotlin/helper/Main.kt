@@ -2,12 +2,13 @@ import kotlin.random.Random
 
 val gameRecords = mutableListOf<String>()
 
+
+// 출력 관련, 세 가지중 선택
 fun main() {
     println("환영합니다! 아무개 단주의 야구게임입니다.")
 
     while (true) {
         val amuRandom = randomRandom()
-
         var gameIsOver = false
 
 
@@ -17,7 +18,7 @@ fun main() {
                 println("세 자리 숫자를 입력해주세요.")
                 while (!gameIsOver) {
                     val guess = readLine() ?: ""
-                    if (isValidInput(guess)) {
+                    if (inputInput(guess)) {
                         val result = checkGuess(guess, amuRandom)
                         println(result)
                         if (result == "딩동댕~ 정답!") {
@@ -48,6 +49,9 @@ fun main() {
     }
 }
 
+
+
+
 // 게임 실행, 기록 관련
 
 fun addGameRecord(result: String) {
@@ -75,7 +79,7 @@ fun randomRandom(): String {
     return digits.joinToString("")
 }
 
- fun isValidInput(guess: String): Boolean {
+ fun inputInput(guess: String): Boolean {
     return guess.length == 3 && guess.all { it in '1'..'9' } && guess.toSet().size == 3
 }
 
@@ -90,7 +94,6 @@ fun randomRandom(): String {
             balls++
         }
     }
-
 
     return when {
         strikes == 3 -> "딩동댕~ 정답!"
