@@ -1,18 +1,18 @@
-package helper
-
 import kotlin.random.Random
-val gameRecords = mutableListOf<String>()
+import helper.GameRecorder
 
 
-// 출력 관련, 세 가지중 선택
+
+
 fun main() {
     println("환영합니다! 아무개 단주의 야구게임입니다.")
+    var recorder = GameRecorder()
 
     while (true) {
         val amuRandom = randomRandom()
         var gameIsOver = false
         var guessCount = 0
-
+        println("$amuRandom")
         println( "1. 게임 시작 2. 게임 기록 3. 게임 종료 ")
         when (readLine()) {
             "1" -> {
@@ -25,7 +25,7 @@ fun main() {
                         guessCount++
                         if (result == "딩동댕~ 정답!") {
                             gameIsOver = true
-                            addGameRecord(guessCount)
+                            recorder.addRecord(guessCount)
                         }
                     } else {
                         println("1부터 9까지의 서로 다른 세 자리 숫자를 입력하세요.")
@@ -34,7 +34,7 @@ fun main() {
             }
             "2" -> {
                 println("게임 기록 메시지 활성화!")
-                displayGameRecords()
+                recorder.displayGameRecords()
 
             }
             "3" -> {
@@ -54,24 +54,6 @@ fun main() {
 
 
 
-// 게임 실행, 게임 결과, 기록 관련
-
-fun addGameRecord(guessCount: Int) {
-    gameRecords.add(" $guessCount 회에 맞추셨습니다. ")
-}
-
-fun displayGameRecords() {
-    if (gameRecords.isEmpty()) {
-        println("기록이 없는디유.")
-    } else {
-        gameRecords.forEachIndexed { index, record ->
-            println("${index + 1}. $record")
-        }
-    }
-}
-
-
-
 fun randomRandom(): String {
     val digits = mutableListOf<Int>()
     while (digits.size < 3) {
@@ -84,14 +66,12 @@ fun randomRandom(): String {
 }
 
 
-
- fun inputInput(guess: String): Boolean {
+fun inputInput(guess: String): Boolean {
     return guess.length == 3 && guess.all { it in '1'..'9' } && guess.toSet().size == 3
 }
 
 
-
- fun checkGuess(guess: String, answer: String): String {
+fun checkGuess(guess: String, answer: String): String {
     var strikes = 0
     var balls = 0
 
@@ -111,4 +91,9 @@ fun randomRandom(): String {
         else -> "꽝인디유"
     }
 }
+
+
+
+
+
 
