@@ -1,5 +1,6 @@
-import kotlin.random.Random
+package helper
 
+import kotlin.random.Random
 val gameRecords = mutableListOf<String>()
 
 
@@ -23,7 +24,7 @@ fun main() {
                         println(result)
                         if (result == "딩동댕~ 정답!") {
                             gameIsOver = true
-                            addGameRecord("1클")
+                            addGameRecord("정답부분을 함수로")
                         }
                     } else {
                         println("1부터 9까지의 서로 다른 세 자리 숫자를 입력하세요.")
@@ -39,7 +40,7 @@ fun main() {
                 println("게임 종료!")
                 return
             }
-            else -> println("1, 2, 3 세가지만 입력 가능합니다.")
+            else -> println("1, 2, 3 세 가지만 입력 가능합니다.")
 
         }
 
@@ -52,7 +53,7 @@ fun main() {
 
 
 
-// 게임 실행, 기록 관련
+// 게임 실행, 게임 결과, 기록 관련
 
 fun addGameRecord(result: String) {
     gameRecords.add(result)
@@ -60,7 +61,7 @@ fun addGameRecord(result: String) {
 
 fun displayGameRecords() {
     if (gameRecords.isEmpty()) {
-        println("기록이 없습니다.")
+        println("기록이 없는디유.")
     } else {
         gameRecords.forEachIndexed { index, record ->
             println("${index + 1}. $record")
@@ -79,9 +80,13 @@ fun randomRandom(): String {
     return digits.joinToString("")
 }
 
+
+
  fun inputInput(guess: String): Boolean {
     return guess.length == 3 && guess.all { it in '1'..'9' } && guess.toSet().size == 3
 }
+
+
 
  fun checkGuess(guess: String, answer: String): String {
     var strikes = 0
@@ -100,7 +105,7 @@ fun randomRandom(): String {
         strikes > 0 && balls > 0 -> "$strikes 스트라이크, $balls 볼"
         strikes > 0 -> "$strikes 스트라이크"
         balls > 0 -> "$balls 볼"
-        else -> "없는디유"
+        else -> "꽝인디유"
     }
 }
 
