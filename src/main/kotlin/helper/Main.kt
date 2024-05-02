@@ -11,7 +11,7 @@ fun main() {
     while (true) {
         val amuRandom = randomRandom()
         var gameIsOver = false
-
+        var guessCount = 0
 
         println( "1. 게임 시작 2. 게임 기록 3. 게임 종료 ")
         when (readLine()) {
@@ -22,9 +22,10 @@ fun main() {
                     if (inputInput(guess)) {
                         val result = checkGuess(guess, amuRandom)
                         println(result)
+                        guessCount++
                         if (result == "딩동댕~ 정답!") {
                             gameIsOver = true
-                            addGameRecord("정답부분을 함수로")
+                            addGameRecord(guessCount)
                         }
                     } else {
                         println("1부터 9까지의 서로 다른 세 자리 숫자를 입력하세요.")
@@ -55,8 +56,8 @@ fun main() {
 
 // 게임 실행, 게임 결과, 기록 관련
 
-fun addGameRecord(result: String) {
-    gameRecords.add(result)
+fun addGameRecord(guessCount: Int) {
+    gameRecords.add(" $guessCount 회에 맞추셨습니다. ")
 }
 
 fun displayGameRecords() {
@@ -68,6 +69,8 @@ fun displayGameRecords() {
         }
     }
 }
+
+
 
 fun randomRandom(): String {
     val digits = mutableListOf<Int>()
