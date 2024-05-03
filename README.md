@@ -220,7 +220,7 @@ GameRecorder 객체를 생성하고,  recorder 변수에 할당한다. : 게임 
 while 무한루프 운용 - 게임 옵션을 제공 (게임 진행, 기록 확인, 게임 종료) : 루프는 프로그램이 종료될 때까지 계속됩니다.  
 val amuRandom = randomRandom() - 임의로 생성된 세 자리 숫자를 amuRandom 변수에 할당한다. : 이 임의의 숫자는 맞춰야 할 정답입니다.  
 var gameIsOver = false - 게임 종료를 판단하는 변수를 선언하고 false로 초기화한다. : 게임이 종료되면 이 변수는 true로 변경됩니다.  
-var guessCount = 0 - 추측 횟수를 추적하기 위한 변수를 선언하고 0으로 초기화한다. : 각 게임의 추측 횟수를 기록합니다.
+var guessCount = 0 - 추측 횟수를 추적하기 위한 변수를 선언하고 0으로 초기화한다. : 각 게임의 추측 횟수를 기록합니다.  
 println("$amuRandom") - 랜덤으로 출력되는 세 자리의 수를 출력한다. : 테스트를 위한 디버깅 목적으로 넣어놨습니다.
 ```
   when (readLine()) {
