@@ -7,8 +7,7 @@
 
 
 ### 😊 설명
-게임 실행, 출력 담당 'main'과 게임 기록을 담당하는 'GameRecorder'를 class로 나눴습니다.  
-설명에 앞서, 함수와 클래스부터 언급하는것이 보는 사람에게 있어서 이해가 더 쉬울거같아, 언급 후 main 로직을 설명 드리겠습니다. 
+설명에 앞서, 함수와 클래스부터 언급하는것이 보는 사람에게 있어서 이해가 더 쉬울거같아, 언급 후 main 로직을 설명 드리겠습니다.
 
 
 ### ❕ randomRandom함수
@@ -48,7 +47,7 @@ guess.all { it in '1'..'9' } - 추측의 모든 문자가 '1'에서 '9' 사이�
 즉, it은 guess 문자열의 각 문자를 순회하면서 해당하는 문자가 '1'부터 '9'까지의 범위에 속하는지를 확인하는데 사용된다고 보시면 됩니다.
 guess.toSet().size == 3 - 추측에 중복된 숫자가 없는지 확인함
 
-#### ❕ checkGuess 함수
+### ❕ checkGuess 함수
 ```
 fun checkGuess(guess: String, answer: String): String {
     var strikes = 0
@@ -71,7 +70,7 @@ fun checkGuess(guess: String, answer: String): String {
     }
 }
 ```
-추측(guess)과 정답(answer)을 비교하여 게임 결과를 평가하는 역할을 합니다.
+추측(guess)과 정답(answer)을 비교하고, 게임 결과를 평가하는 역할을 합니다.
 #### ❔ 상세 설명
 ```
 fun checkGuess(guess: String, answer: String): String {
@@ -102,15 +101,180 @@ for 루프 - 추측 문자열 guess의 각 문자에 대해 루프를 실행한�
 }
 ```
 결과 리턴 - when 조건문을 운용하여 게임 결과를 반환한다.  
-우선 세 자리 모두가 일치하면 "딩동댕~ 정답!", 스트라이크와 볼의 개수에 따라 다른 결과를 반환하고  
+우선 세 자리 모두가 일치하면 "딩동댕~ 정답!", 스트라이크와 볼의 개수에 따라 다른 결과를 반환하고,  
 스트라이크와 볼이 모두 없으면 "꽝인디유"를 반환합니다.
 
-#### GameRecorder 클래스
+### ❕ GameRecorder 클래스
+```
+class GameRecorder {
+    private val gameRecords = mutableListOf<String>()
+
+    fun addRecord(guessCount: Int) {
+        gameRecords.add("정답 횟수:$guessCount")
+    }
+
+    fun displayGameRecords() {
+        if (gameRecords.isEmpty()) {
+            println("기록이 없는디유.")
+        } else {
+            gameRecords.forEachIndexed { index, record ->
+                println("${index + 1}. $record")
+            }
+        }
+    }
+
+}
+```
+기록을 출력하는 함수를 갖고 있습니다. 
+#### ❔ 상세 설명
+```
+    private val gameRecords = mutableListOf<String>()
+
+    fun addRecord(guessCount: Int) {
+        gameRecords.add("정답 횟수:$guessCount")
+    }
+```
+private val gameRecords = mutableListOf<String>() : 빈 MutableList를 생성하여 문자열 저장 - 게임 기록을 저장하는 용도로 사용됩니다.  
+addRecord 함수: guessCount 매개변수를 받아서 이 값을 gameRecords 리스트에 추가한다. - 정답(시도) 횟수를 기록하는 역할을 합니다.  
+
+```
+ fun displayGameRecords() {
+        if (gameRecords.isEmpty()) {
+            println("기록이 없는디유.")
+        } else {
+            gameRecords.forEachIndexed { index, record ->
+                println("${index + 1}. $record")
+            }
+        }
+    }
+```
+displayGameRecords 함수 - 저장된 게임 기록을 표시함  
+gameRecords 리스트가 비어 있는지 확인한다. : ( 게임 시작 전 2번을 누르면 " 기록이 없는디유. " 출력 후 함수를 종료합니다.)  
+비어 있지 않다면, forEachIndexed 함수를 사용하여 각 게임 기록을 인덱스와 함께 출력합니다.  
+*인덱스는 0부터 시작하지만, 보여줄 때는 1부터 시작하는 것이 더 낫다고 생각하여, 인덱스에 1을 더하여 출력시키도록 했습니다.  
+
+### ❕ Main
+```
+fun main() {
+    println("환영합니다! 아무개 단주의 야구게임입니다.")
+    var recorder = GameRecorder()
+
+    while (true) {
+        val amuRandom = randomRandom()
+        var gameIsOver = false
+        var guessCount = 0
+        println("$amuRandom")
+        println( "1. 게임 시작 2. 게임 기록 3. 게임 종료 ")
+        when (readLine()) {
+            "1" -> {
+                println("세 자리 숫자를 입력해주세요.")
+                while (!gameIsOver) {
+                    val guess = readLine() ?: ""
+                    if (inputInput(guess)) {
+                        val result = checkGuess(guess, amuRandom)
+                        println(result)
+                        guessCount++
+                        if (result == "딩동댕~ 정답!") {
+                            gameIsOver = true
+                            recorder.addRecord(guessCount)
+                        }
+                    } else {
+                        println("1부터 9까지의 서로 다른 세 자리 숫자를 입력하세요.")
+                    }
+                }
+            }
+            "2" -> {
+                println("게임 기록 메시지 활성화!")
+                recorder.displayGameRecords()
+
+            }
+            "3" -> {
+                println("게임 종료!")
+                return
+            }
+            else -> println("1, 2, 3 세 가지만 입력 가능합니다.")
+
+        }
+
+        println("아무 키나 누르세요.")
+        readLine()
+
+    }
+}
+```
+야구게임의 전반적인 진행과 게임 기록을 유지시키고, 게임을 종료하는 기능을 갖고 있습니다.  
+#### ❔ 상세 설명
+```
+ println("환영합니다! 아무개 단주의 야구게임입니다.")
+    var recorder = GameRecorder()
+
+    while (true) {
+        val amuRandom = randomRandom()
+        var gameIsOver = false
+        var guessCount = 0
+        println("$amuRandom")
+        println( "1. 게임 시작 2. 게임 기록 3. 게임 종료 ")
+
+```
+GameRecorder 객체를 생성하고,  recorder 변수에 할당한다. : 게임 기록을 추적하고 관리하기 위해서 사용됩니다.  
+while 무한루프 운용 - 게임 옵션을 제공 (게임 진행, 기록 확인, 게임 종료) : 루프는 프로그램이 종료될 때까지 계속됩니다.  
+val amuRandom = randomRandom() - 임의로 생성된 세 자리 숫자를 amuRandom 변수에 할당한다. : 이 임의의 숫자는 맞춰야 할 정답입니다.  
+var gameIsOver = false - 게임 종료를 판단하는 변수를 선언하고 false로 초기화한다. : 게임이 종료되면 이 변수는 true로 변경됩니다.  
+var guessCount = 0 - 추측 횟수를 추적하기 위한 변수를 선언하고 0으로 초기화한다. : 각 게임의 추측 횟수를 기록합니다.
+println("$amuRandom") - 랜덤으로 출력되는 세 자리의 수를 출력한다. : 테스트를 위한 디버깅 목적으로 넣어놨습니다.
+```
+  when (readLine()) {
+            "1" -> {
+                println("세 자리 숫자를 입력해주세요.")
+                while (!gameIsOver) {
+                    val guess = readLine() ?: ""
+                    if (inputInput(guess)) {
+                        val result = checkGuess(guess, amuRandom)
+                        println(result)
+                        guessCount++
+                        if (result == "딩동댕~ 정답!") {
+                            gameIsOver = true
+                            recorder.addRecord(guessCount)
+                        }
+                    } else {
+                        println("1부터 9까지의 서로 다른 세 자리 숫자를 입력하세요.")
+                    }
+                }
+            }
+            "2" -> {
+                println("게임 기록 메시지 활성화!")
+                recorder.displayGameRecords()
+
+            }
+            "3" -> {
+                println("게임 종료!")
+                return
+            }
+            else -> println("1, 2, 3 세 가지만 입력 가능합니다.")
+
+        }
+
+        println("아무 키나 누르세요.")
+        readLine()
+
+    }
+```
+while (!gameIsOver) {} - 게임이 종료되지 않을 때 까지 입력을 받는다.  
+val guess = readLine() ?: "" - 입력을 읽어들이고, guess 변수에 저장한다. : 만약 입력이 없으면 빈 문자열("")로 초기화됩니다.  
+if (inputInput(guess)) {} inputInput 함수는 입력이 올바른 형식인지 확인하는 역할을 한다.  
+val result = checkGuess(guess, amuRandom) - 입력과 랜덤으로 생성된 숫자를 비교하여 결과를 계산한다.  
+guessCount++ - 추측 횟수를 증가시킵니다.  
+if (result == "딩동댕~ 정답!") {} - 만약 정답을 맞췄다면, : gameIsOver = true 게임을 종료합니다.  
+recorder.addRecord(guessCount) - 이번 게임의 횟수를 기록에 추가한다.  
+else {} - 세 자리수 외의 네 자리수 이상, 한글, 영어를 입력할 경우 "1부터 9까지의 서로 다른 세 자리 숫자를 입력하세요." 라고 출력됩니다.  
+"2" -> recorder.displayGameRecords() - recorder객체의 displayGameRecords() 함수를 호출하여 이전 게임의 기록을 출력한다.  
+else -> println(....) - 1~3 외 한글, 영어를 입력할 경우 "1, 2, 3 세 가지만 입력 가능합니다." 라고 출력됩니다.  
+println("아무 키나 누르세요.") readLine() - 아무 키나 누를 때까지 대기하고 입력을 받습니다.
 
 
 
 #### 💻 실행 예시
-
+![Desktop 2024 05 03 - 11 31 37 02](https://github.com/DanDanjoo/algorithm/assets/162088392/a76849cd-f282-44fc-81e8-8430140124d9)
 
 
 
